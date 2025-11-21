@@ -1,0 +1,19 @@
+/* 소개 페이지 전용 */
+
+.about-section {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  border: 1px solid #eee;
+}
+
+.about-section h2 {
+  font-size: 26px;
+  margin-bottom: 12px;
+}
+
+.about-section p {
+  line-height: 1.6;
+  font-size: 16px;
+  color: #444;
+}

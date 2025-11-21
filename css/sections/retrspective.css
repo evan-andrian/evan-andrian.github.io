@@ -1,0 +1,40 @@
+.retro-section {
+  max-width: 1024px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+.retro-section .section-title {
+  font-size: 22px;
+  margin-bottom: 18px;
+}
+
+.retro-section .post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.retro-section .post-card {
+  background: #fff;
+  border: 1px solid #dfdfdf;
+  border-radius: 6px;
+  padding: 20px;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.retro-section .post-card:hover {
+  background: #fafafa;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+}
+
+.retro-section h3 {
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.retro-section .meta {
+  font-size: 12px;
+  color: #888;
+}

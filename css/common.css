@@ -1,0 +1,35 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+  background: #fafafa;
+}
+
+#content {
+  padding: 10px;
+  padding-top : 0; 
+}
+
+#footer{
+  box-shadow: 5px 0 0 0 black;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+}
+
+.item {
+  padding: 15px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.item:hover {
+  background: #f0f0f0;
+}
+
+.list li {
+  padding: 8px 0;
+}

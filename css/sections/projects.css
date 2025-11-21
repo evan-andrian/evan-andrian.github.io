@@ -1,0 +1,24 @@
+/* 프로젝트 페이지 전용 */
+
+.project-section .project-item {
+  background: #fff;
+  border: 1px solid #dedede;
+  border-radius: 8px;
+  padding: 22px;
+  margin-bottom: 20px;
+  transition: box-shadow .3s;
+}
+
+.project-section .project-item:hover {
+  box-shadow: 0 3px 16px rgba(0,0,0,0.05);
+}
+
+.project-section .project-item h3 {
+  margin-bottom: 6px;
+}
+
+.project-section .stack {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #5d5d5d;
+}

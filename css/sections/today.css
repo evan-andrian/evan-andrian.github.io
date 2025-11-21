@@ -1,0 +1,28 @@
+.til-section {
+  max-width: 1024px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+.til-section .section-title {
+  font-size: 22px;
+  margin-bottom: 18px;
+}
+
+.til-section .til-item {
+  background: white;
+  border: 1px solid #eaeaea;
+  padding: 18px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.til-section .til-item h3 {
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.til-section .til-item p {
+  color: #555;
+  font-size: 14px;
+}
