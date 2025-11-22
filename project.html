@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>프로젝트 README</title>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link id="section-style" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@2.4.0/dist/purify.min.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/readme.js"></script>
+  <script src="js/header_footer.js"></script>
+  <style>
+    /* README container: limit to half viewport width on larger screens */
+    #proj-readme {
+      box-sizing: border-box;
+      margin: 18px auto;
+      width: 90vw;
+      max-width: 50vw;
+    }
+
+    /* Keep images responsive and maintain aspect ratio */
+    #proj-readme img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 8px 0;
+    }
+
+    /* Ensure code/pre blocks wrap and fit */
+    #proj-readme pre, #proj-readme code {
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    /* On small screens use full width for readability */
+    @media (max-width: 800px) {
+      #proj-readme { width: 96vw; max-width: 96vw; }
+    }
+    /* Project title + owner styling */
+    #proj-title {
+      color: #000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 6px 0;
+      font-weight: 700;
+    }
+    #proj-title .proj-title-text { flex: 1; }
+    .proj-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.06) inset;
+    }
+    #proj-owner { color: #555; margin: 4px 0 10px 0; font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+  <div id="header"></div>
+  <main id="content" class="container">
+    <h2 id="proj-title"><span class="proj-title-text">프로젝트</span></h2>
+    <div id="proj-owner"></div>
+    <div id="proj-meta"></div>
+    <div id="proj-readme"><p class="muted">로딩 중...</p></div>
+  </main>
+  <div id="footer"></div>
+
+  <script>
+    $(function() {
+      if (window.initHeaderFooter) window.initHeaderFooter();
+      // parse query
+      const params = new URLSearchParams(window.location.search);
+      const user = params.get('user');
+      const repo = params.get('repo');
+      // set title immediately from repo param (if present)
+      try { if (repo) { $('#proj-title .proj-title-text').text(repo); } } catch(e) {}
+      if (!user || !repo) {
+        $('#proj-readme').html('<p class="muted">user 또는 repo 파라미터가 필요합니다.</p>');
+        return;
+      }
+
+      $('#proj-title').text(repo);
+
+      // load config to get token if present
+      $.getJSON('data/config.json').done(function(cfg){
+        const headers = {};
+        if (cfg && cfg.githubToken) headers['Authorization'] = 'Bearer ' + cfg.githubToken;
+        headers['X-GitHub-Api-Version'] = '2022-11-28';
+        headers['Accept'] = 'application/vnd.github+json';
+
+        const readmeApi = `https://api.github.com/repos/${encodeURIComponent(user)}/${encodeURIComponent(repo)}/readme`;
+        const repoApi = `https://api.github.com/repos/${encodeURIComponent(user)}/${encodeURIComponent(repo)}`;
+
+        $.ajax({url: repoApi, dataType: 'json', headers: headers}).done(function(repoInfo){
+          // title text + small avatar on the right
+          try {
+            const titleText = $('<span>').addClass('proj-title-text').text(repo);
+            const $title = $('#proj-title').empty().append(titleText);
+            if (repoInfo && repoInfo.owner && repoInfo.owner.avatar_url) {
+              const $img = $('<img>').addClass('proj-avatar').attr('src', repoInfo.owner.avatar_url).attr('alt', repoInfo.owner.login || 'avatar');
+              $title.append($img);
+            }
+            // owner/org name under the title
+            try { $('#proj-owner').text(repoInfo.owner && repoInfo.owner.login ? repoInfo.owner.login : ''); } catch(e) {}
+            // meta: description + stars
+            $('#proj-meta').text((repoInfo.description || '') + ' • ★ ' + (repoInfo.stargazers_count||0));
+
+            // click handler on title opens GitHub repo
+            try {
+              $('#proj-title').css('cursor', 'pointer').off('click.proj').on('click.proj', function(e) {
+                e.preventDefault();
+                if (repoInfo && repoInfo.html_url) window.open(repoInfo.html_url, '_blank');
+              });
+            } catch (e) {}
+          } catch (e) {
+            // fallback: set meta only
+            $('#proj-meta').text((repoInfo.description || '') + ' • ★ ' + (repoInfo.stargazers_count||0));
+          }
+        });
+
+        $.ajax({url: readmeApi, dataType: 'json', headers: headers})
+          .done(function(data){
+            const md = base64ToUtf8(data.content || '');
+            const $el = renderReadmeContent(md);
+            $('#proj-readme').empty().append($el);
+          })
+          .fail(function(xhr){
+            let msg = 'README를 불러오지 못했습니다.';
+            if (xhr && xhr.status === 404) msg = 'README가 존재하지 않습니다.';
+            if (xhr && xhr.status === 401) msg = '인증 실패: 토큰을 확인하세요.';
+            $('#proj-readme').html('<p class="muted">'+msg+'</p>');
+          });
+      }).fail(function(){
+        $('#proj-readme').html('<p class="muted">설정 파일을 불러오지 못했습니다.</p>');
+      });
+    });
+  </script>
+</body>
+</html>

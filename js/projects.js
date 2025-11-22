@@ -194,7 +194,6 @@ require('dotenv').config();
     const hiddenPrivateCount = opts.privateCount || 0;
     page = page || 1;
     const pageSize = 10;
-    // no proxy used here; callers use direct API URLs
     const $wrap = $('<div>').addClass('projects-list');
     if (!repos || !repos.length) {
       $('#projects-list').html('<p class="muted">저장소가 없습니다.</p>');
@@ -245,7 +244,7 @@ require('dotenv').config();
           try {
             $name.css('cursor','pointer').on('click', function(e) { e.stopPropagation(); window.open(r.html_url, '_blank'); });
           } catch (e) {}
-          const $vis = $('<div>').addClass('visibility-badge').text(visibility.toLocaleLowerCase());
+          const $vis = $('<div>').addClass('visibility-badge').text(visibility);
           $top.append($name).append($vis);
           $card.append($top);
 
