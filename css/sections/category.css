@@ -104,6 +104,13 @@
   background: #fff;
   border: 1px solid #e6e6e6;
 }
+
+/* pagination */
+.repo-pagination { margin-top: 12px; display:flex; gap:6px; flex-wrap:wrap; }
+.repo-pagination .page-btn { padding:6px 10px; border-radius:6px; border:1px solid #ddd; background:#fff; cursor:pointer; }
+.repo-pagination .page-btn.active { background:#0366d6; color:#fff; border-color:#0366d6; }
+.repo-pagination .page-btn.disabled { opacity: 0.5; cursor: default; }
+.repo-pagination .page-prev, .repo-pagination .page-next { font-weight:600; }
 .repo-card-header {
   display: flex;
   justify-content: space-between;
@@ -120,16 +127,24 @@
   border-radius: 50%;
   object-fit: cover;
 }
-.owner-info .owner-name {
+
+.owner-info .repo-name {
+  font-size: 1.5rem;
+  color: #333;
   font-weight: 600;
 }
-.owner-info .repo-name {
-  font-size: 0.95rem;
-  color: #333;
+.repo-stats {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 3px;
 }
 .repo-stats .stars {
-  font-size: 0.95rem;
-  color: #333;
+  
+  font-size: 1rem;
+  color: #f5c518; /* GitHub-like star (gold) */
 }
 .repo-languages {
   margin-top: 12px;
@@ -204,6 +219,13 @@
 }
 .readme-controls .btn-pause {
   background: #6c757d;
+}
+
+/* hidden/private repo count */
+.private-count {
+  margin-bottom: 8px;
+  color: #666;
+  font-size: 0.95rem;
 }
 
 /* README 아코디언 스타일 */

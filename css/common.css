@@ -39,3 +39,41 @@ body, button, input, select, textarea {
 .list li {
   padding: 8px 0;
 }
+
+/* small badge for organization/owner when differing from configured user */
+.org-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 6px;
+  background: #eef6ff;
+  color: #0366d6;
+  border-radius: 999px;
+  font-size: 0.8em;
+  vertical-align: middle;
+}
+
+/* projects notices (dismissible banners) */
+.projects-notice {
+  margin: 10px 0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.projects-notice .projects-notice-body {
+  padding: 12px 14px;
+  background: #fff7e6;
+  color: #5a3e00;
+  border: 1px solid #ffe8a1;
+}
+.projects-notice.missing-orgs .projects-notice-body { background: #fff2f0; color: #611a15; border-color: #ffcdc9; }
+.projects-notice.forbidden-orgs .projects-notice-body { background: #f0f7ff; color: #083a66; border-color: #cfe7ff; }
+.projects-notice .projects-notice-close {
+  position: relative;
+  float: right;
+  margin-top: -36px;
+  margin-right: 8px;
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: rgba(0,0,0,0.6);
+}

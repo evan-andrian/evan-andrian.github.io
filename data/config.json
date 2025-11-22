@@ -1,3 +1,5 @@
 {
-  "githubUser": "yeviDev"
+  "githubUser": "evan-andrian",
+  "githubToken" : "REDACTED_REMOVE_AND_SET_ENV",
+  "organizations": ["25-tetris", "DineTable", "poosoap"]
 }
