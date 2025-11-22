@@ -200,6 +200,16 @@
     const hiddenPrivateCount = opts.privateCount || 0;
     page = page || 1;
     const pageSize = 10;
+    // resolveApiUrl: honor optional proxy in data/config.json (synchronous read)
+    function resolveApiUrl(u) {
+      try {
+        const cfg = window.requireDefault && window.requireDefault('data/config.json');
+        const proxyBase = cfg && cfg.githubProxy ? String(cfg.githubProxy).trim() : '';
+        return proxyBase ? (proxyBase + encodeURIComponent(u)) : u;
+      } catch (e) {
+        return u;
+      }
+    }
     const $wrap = $('<div>').addClass('projects-list');
     if (!repos || !repos.length) {
       $('#projects-list').html('<p class="muted">저장소가 없습니다.</p>');
@@ -250,7 +260,7 @@
           try {
             $name.css('cursor','pointer').on('click', function(e) { e.stopPropagation(); window.open(r.html_url, '_blank'); });
           } catch (e) {}
-          const $vis = $('<div>').addClass('visibility-badge').text(visibility);
+          const $vis = $('<div>').addClass('visibility-badge').text(visibility.toLocaleLowerCase());
           $top.append($name).append($vis);
           $card.append($top);
 
