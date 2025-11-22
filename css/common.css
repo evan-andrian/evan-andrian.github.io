@@ -4,6 +4,12 @@ body {
   background: #fafafa;
 }
 
+/* 텍스트 부드럽게 처리 */
+body, button, input, select, textarea {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 #content {
   padding: 10px;
   padding-top : 0; 

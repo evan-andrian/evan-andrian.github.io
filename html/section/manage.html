@@ -1,0 +1,29 @@
+<section class="manage-section">
+  <div class="container">
+    <h2>관리자: 카테고리 및 포스트</h2>
+
+    <h3>카테고리 관리</h3>
+    <div id="manage-categories" class="manage-list">
+      <p class="muted">로딩 중...</p>
+    </div>
+    <form id="add-category-form">
+      <input id="new-cat-label" placeholder="라벨(예: React)" required>
+      <input id="new-cat-slug" placeholder="슬러그(예: react)" required>
+      <button type="submit">카테고리 추가</button>
+    </form>
+
+    <h3>포스트 관리</h3>
+    <div id="manage-posts" class="manage-list">
+      <p class="muted">로딩 중...</p>
+    </div>
+    <form id="add-post-form">
+      <input id="new-post-title" placeholder="타이틀" required>
+      <input id="new-post-slug" placeholder="슬러그" required>
+      <input id="new-post-date" placeholder="YYYY-MM-DD">
+      <select id="new-post-cats" multiple></select>
+      <input id="new-post-excerpt" placeholder="요약">
+      <textarea id="new-post-content" placeholder="본문(HTML 또는 Markdown)"></textarea>
+      <button type="submit">포스트 추가</button>
+    </form>
+  </div>
+</section>

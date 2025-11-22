@@ -1,0 +1,29 @@
+[
+  {
+    "id": "post-react-hooks",
+    "title": "React 훅 기초 정리",
+    "slug": "react-hooks",
+    "date": "2025-11-01",
+    "categories": ["react", "web"],
+    "excerpt": "React 훅(useState, useEffect 등)의 기본 사용법과 주의사항을 정리합니다.",
+    "content": "<p>React 훅은 함수형 컴포넌트에서 상태와 사이드 이펙트를 다루기 위한 API입니다. <strong>useState</strong>로 상태 관리, <strong>useEffect</strong>로 생명주기 유사 동작을 구현합니다.</p>"
+  },
+  {
+    "id": "post-android-activity",
+    "title": "Android Activity 생명주기 핵심",
+    "slug": "android-activity-life",
+    "date": "2025-09-15",
+    "categories": ["android"],
+    "excerpt": "Activity의 onCreate/onStart/onResume 등 생명주기를 상황별로 요약합니다.",
+    "content": "<p>Activity의 생명주기를 이해하면 리소스 관리와 상태 복원이 쉬워집니다. onCreate에서 초기화, onPause에서 상태 저장 등을 고려하세요.</p>"
+  },
+  {
+    "id": "post-java-stream",
+    "title": "Java Stream 기초",
+    "slug": "java-stream",
+    "date": "2025-08-20",
+    "categories": ["java"],
+    "excerpt": "Java Stream API로 컬렉션을 선언적(선형)으로 처리하는 예시 모음입니다.",
+    "content": "<p>Stream을 사용하면 필터링, 매핑, 집계를 간결하게 작성할 수 있습니다. 중간 연산과 최종 연산을 구분하세요.</p>"
+  }
+]

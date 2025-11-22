@@ -1,0 +1,281 @@
+.category-section {
+  padding: 30px 20px;
+}
+
+.category-section .container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+#category-title {
+  font-size: 1.5rem;
+  margin-bottom: 12px;
+}
+
+#category-list p {
+  color: #666;
+}
+
+.post-list {
+  display: grid;
+  gap: 12px;
+}
+
+.post-item {
+  padding: 12px;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.post-item h3 {
+  margin: 0 0 6px 0;
+  font-size: 1.1rem;
+}
+
+.post-item .excerpt {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.post-article {
+  padding: 30px 20px;
+}
+
+.post-article #post-title {
+  margin-top: 8px;
+}
+
+.post-meta {
+  color: #888;
+  margin-bottom: 18px;
+}
+
+.back-to-category {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: #555;
+  text-decoration: none;
+}
+
+/* projects list styling (reuse category css file) */
+.projects-list {
+  display: grid;
+  gap: 10px;
+}
+
+.repo-item {
+  padding: 12px;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.repo-item h3 {
+  margin: 0 0 6px 0;
+}
+
+.repo-item .desc {
+  color: #666;
+}
+
+.repo-actions {
+  margin-top: 8px;
+}
+
+.repo-actions a {
+  margin-right: 10px;
+  color: #0366d6;
+  text-decoration: none;
+}
+
+.project-detail {
+  margin-top: 18px;
+  padding: 14px;
+  border: 1px solid #eee;
+  background: #fff;
+  border-radius: 6px;
+}
+
+/* Repo card styles */
+.repo-card {
+  padding: 16px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid #e6e6e6;
+}
+.repo-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.repo-owner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.owner-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.owner-info .owner-name {
+  font-weight: 600;
+}
+.owner-info .repo-name {
+  font-size: 0.95rem;
+  color: #333;
+}
+.repo-stats .stars {
+  font-size: 0.95rem;
+  color: #333;
+}
+.repo-languages {
+  margin-top: 12px;
+}
+.language-bar {
+  display: flex;
+  height: 14px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #eee;
+}
+.lang-segment {
+  height: 100%;
+}
+.lang-empty {
+  padding: 4px 8px;
+  color: #777;
+}
+.language-legend {
+  margin-top: 8px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+  color: #444;
+}
+.language-legend .lang-item strong {
+  margin-right: 6px;
+}
+.repo-readme {
+  margin-top: 14px;
+}
+.readme-content {
+  border-top: 1px solid #f0f0f0;
+  padding-top: 12px;
+}
+
+/* README 슬라이더 스타일 */
+.readme-slider {
+  position: relative;
+  overflow: hidden;
+}
+.readme-slide {
+  display: none;
+  padding: 10px 0;
+}
+.readme-slide.active {
+  display: block;
+}
+.readme-controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+.readme-controls button {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  background: #0366d6;
+  color: white;
+  cursor: pointer;
+}
+.readme-slide-counter {
+  font-size: 0.9rem;
+  color: #555;
+  align-self: center;
+}
+
+.readme-controls .btn-play {
+  background: #28a745;
+}
+.readme-controls .btn-pause {
+  background: #6c757d;
+}
+
+/* README 아코디언 스타일 */
+.readme-accordion {
+  border-top: 1px solid #eee;
+}
+.acc-item {
+  border-bottom: 1px solid #f0f0f0;
+}
+.acc-header {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  background: #fafafa;
+}
+.acc-header:hover { background: #f6f8fa; }
+.acc-title { font-weight: 600; }
+.acc-toggle { font-size: 0.9rem; color: #666; }
+.acc-content {
+  padding: 12px;
+  display: none;
+  background: #fff;
+}
+.acc-content.open { display: block; }
+
+
+/* Smooth text in repo cards/readme */
+.repo-card, .readme-content, .repo-owner, .repo-card-header {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* manage section styles */
+.manage-list {
+  margin-bottom: 12px;
+}
+.manage-cat-item, .manage-post-item {
+  padding: 8px 10px;
+  border: 1px solid #eee;
+  margin-bottom: 6px;
+  border-radius: 6px;
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.manage-list .btn-del-cat, .manage-list .btn-del-post {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 6px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#add-category-form input, #add-post-form input, #add-post-form textarea, #add-post-form select {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  margin: 6px 0;
+  box-sizing: border-box;
+}
+
+#add-category-form button, #add-post-form button {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  background: #0366d6;
+  color: white;
+  cursor: pointer;
+}
+
+

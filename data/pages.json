@@ -1,0 +1,14 @@
+{
+    "home" : "홈",
+    "retrspective" : "회고",
+    "projects" : "프로젝트",
+    "about" : "소개",
+    "category" : "카테고리",
+    "today" : "오늘의 기록",
+    "search_placeholder" : "검색어를 입력하세요...",
+    "blog_title" : "Evan's Log",
+    "blog_title_short" : "evan's log",
+    "select_category_title" : "블로그 카테고리 선택",
+    "loading" : "로딩 중...",
+    "error_loading" : "로딩 중 오류가 발생했습니다."
+}

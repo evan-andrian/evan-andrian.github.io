@@ -1,13 +1,22 @@
 <header class="site-header">
   <div class="header-inner">
-    <h1 class="blog-title nav-item" data-target="home">Evan's Dev Log</h1>
-    <nav class="nav">
-      <a href="#" class="nav-item" data-target="home">홈</a>
-      <a href="#" class="nav-item" data-target="retrspective">회고</a>
-      <a href="#" class="nav-item" data-target="projects">프로젝트</a>
-      <a href="#" class="nav-item" data-target="today">TIL</a>
-      <a href="#" class="nav-item" data-target="about">소개</a>
-    </nav>
+    <div class="header-left">
+      <h1 class="blog-title nav-item" data-target="home">Evan's Log</h1>
+      <nav class="nav">
+        <a href="#home" class="nav-item" data-target="home">홈</a>
+        <a href="#retrspective" class="nav-item" data-target="retrspective">회고</a>
+        <a href="#projects" class="nav-item" data-target="projects">프로젝트</a>
+        <a href="#today" class="nav-item" data-target="today">TIL</a>
+        <a href="#about" class="nav-item" data-target="about">소개</a>
+      </nav>
+    </div>
+
+    <div class="header-right">
+      <label for="category-select" class="sr-only">카테고리</label>
+      <select id="category-select" class="category-select" aria-label="블로그 카테고리">
+        <option value="">카테고리</option>
+      </select>
+    </div>
   </div>
-  <a href="https://github.com/Evan"></a>
+  <a href="https://github.com/yeviDev"><img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" style="width: 50px; height: 50px; margin:0 10px;" alt="GitHub"></a>
 </header>

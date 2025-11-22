@@ -1,0 +1,6 @@
+[
+  { "slug": "web", "label": "웹" },
+  { "slug": "react", "label": "React" },
+  { "slug": "android", "label": "Android" },
+  { "slug": "java", "label": "Java" }
+]
