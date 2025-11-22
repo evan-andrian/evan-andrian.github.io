@@ -11,11 +11,9 @@ $(document).ready(function() {
   $(document).on('click', '.view-readme', function(e) {
     e.preventDefault();
     const repo = $(this).data('repo');
-    $.getJSON('data/config.env')
-      .done(function(process.env) {
+
         const user = process.env.githubUser || process.env.user || '';
         if (!user) return;
         if (window.loadRepoReadme) window.loadRepoReadme(user, repo);
       });
-  });
 });

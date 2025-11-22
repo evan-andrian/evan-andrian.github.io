@@ -22,3 +22,11 @@
   font-size: 14px;
   color: #5d5d5d;
 }
+
+.repo-compact-top {
+  display: flex;
+}
+
+.repo-compact-name {
+  margin-right: 10px;
+}
