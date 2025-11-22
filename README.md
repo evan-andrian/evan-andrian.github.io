@@ -1,2 +1,2 @@
-# 🌐 Site Name : Evan's Log
-## 📢 Creed : I think "The hard work of the developer is the user's convenience"
+# yeviDev.github.io
+A blog for a 22-year-old aspiring developer
