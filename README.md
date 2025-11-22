@@ -1,2 +1,2 @@
-# yeviDev.github.io
-A blog for a 22-year-old aspiring developer
+# 🌐 Site Name : Evan's Log
+## 📢 Greeting : I think "The hard work is devloper for users convinence"
