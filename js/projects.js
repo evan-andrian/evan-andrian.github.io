@@ -1,4 +1,5 @@
 // GitHub projects integration (copied from previous implementation)
+require('dotenv').config();
 (function() {
   // helper: format relative time like '3 hours ago'
   function formatTimeAgo(iso) {
@@ -45,9 +46,8 @@
     $('#projects-list').empty();
     $('#project-detail').hide().empty();
     // 설정에서 githubUser 가져오기
-    $.getJSON('data/config.json')
-      .done(function(cfg) {
-        const user = cfg.githubUser;
+    
+        const user = process.env.githubUser;
         if (!user) {
           $('#projects-list').html('<p class="muted">GitHub 사용자명이 설정되지 않았습니다. data/config.json을 편집하세요.</p>');
           return;
@@ -58,16 +58,11 @@
           try { return Math.max(1, parseInt((new URLSearchParams(window.location.search)).get('page')||'1', 10) || 1); } catch(e) { return 1; }
         })();
 
-        // proxy support: if cfg.githubProxy is set (base URL), route requests through it.
-        const proxyBase = cfg && cfg.githubProxy ? String(cfg.githubProxy).trim() : '';
-        function resolveApiUrl(u) { return proxyBase ? (proxyBase + encodeURIComponent(u)) : u; }
-
+        // API base and headers (no proxy). support multiple token config keys.
         const api = `https://api.github.com/users/${encodeURIComponent(user)}/repos?sort=updated&per_page=100`;
         const headers = {};
-        // if using proxy, do not attach token from browser (proxy should handle auth)
-        if (!proxyBase && cfg.githubToken) {
-          headers['Authorization'] = 'Bearer ' + cfg.githubToken;
-        }
+        const token = process.env && (process.env.githubToken || process.env.gitHubToken || process.env.token);
+        if (token) headers['Authorization'] = 'Bearer ' + token;
         headers['X-GitHub-Api-Version'] = '2022-11-28';
         headers['Accept'] = 'application/vnd.github+json';
 
@@ -88,18 +83,18 @@
           renderRepoList(userParam, visible, headers, initialPage, { privateCount: privateCount });
         }
 
-        $.ajax({ url: resolveApiUrl(api), dataType: 'json', headers: headers })
+        $.ajax({ url: api, dataType: 'json', headers: headers })
           .done(function(repos) {
             // Try to fetch organizations for the user and include their repos
             const orgsApi = `https://api.github.com/users/${encodeURIComponent(user)}/orgs`;
-            $.ajax({ url: resolveApiUrl(orgsApi), dataType: 'json', headers: headers })
+            $.ajax({ url: orgsApi, dataType: 'json', headers: headers })
               .done(function(orgs) {
                 // Allow explicit extra orgs from config (various keys: extraOrgs, includeOrgs, organizations, organization, orgs)
                 try {
                   let extra = [];
-                  if (cfg) {
+                  if (process.env) {
                     ['extraOrgs', 'includeOrgs', 'organizations', 'organization', 'orgs'].forEach(function(k) {
-                      const v = cfg[k];
+                      const v = process.env[k];
                       if (!v) return;
                       if (Array.isArray(v)) extra = extra.concat(v);
                       else extra.push(v);
@@ -128,7 +123,7 @@
                   const orgReposApi = `https://api.github.com/orgs/${encodeURIComponent(login)}/repos?per_page=100&type=all`;
                   // Wrap each ajax call in a deferred that always resolves with {login, ok, data, xhr}
                   const deferred = $.Deferred();
-                  $.ajax({ url: resolveApiUrl(orgReposApi), dataType: 'json', headers: headers })
+                  $.ajax({ url: orgReposApi, dataType: 'json', headers: headers })
                     .done(function(data) { deferred.resolve({ login: login, ok: true, data: data }); })
                     .fail(function(xhr) { deferred.resolve({ login: login, ok: false, xhr: xhr }); });
                   return deferred.promise();
@@ -189,27 +184,17 @@
             if (xhr && xhr.status === 403) msg = 'GitHub 요청이 거부되었습니다(레이트리밋 또는 권한).';
             $('#projects-list').html(`<p class="muted">${msg}</p>`);
           });
-      })
+      }
       .fail(function() {
         $('#projects-list').html('<p class="muted">설정 파일(data/config.json)을 불러오지 못했습니다.</p>');
       });
-  };
 
   function renderRepoList(user, repos, headers, page, opts) {
     opts = opts || {};
     const hiddenPrivateCount = opts.privateCount || 0;
     page = page || 1;
     const pageSize = 10;
-    // resolveApiUrl: honor optional proxy in data/config.json (synchronous read)
-    function resolveApiUrl(u) {
-      try {
-        const cfg = window.requireDefault && window.requireDefault('data/config.json');
-        const proxyBase = cfg && cfg.githubProxy ? String(cfg.githubProxy).trim() : '';
-        return proxyBase ? (proxyBase + encodeURIComponent(u)) : u;
-      } catch (e) {
-        return u;
-      }
-    }
+    // no proxy used here; callers use direct API URLs
     const $wrap = $('<div>').addClass('projects-list');
     if (!repos || !repos.length) {
       $('#projects-list').html('<p class="muted">저장소가 없습니다.</p>');
@@ -242,8 +227,8 @@
       const readmeApi = `https://api.github.com/repos/${encodeURIComponent(ownerLogin)}/${encodeURIComponent(r.name)}/readme`;
 
       $.when(
-        $.ajax({ url: resolveApiUrl(langsApi), dataType: 'json', headers: headers }),
-        $.ajax({ url: resolveApiUrl(readmeApi), dataType: 'json', headers: headers })
+        $.ajax({ url: langsApi, dataType: 'json', headers: headers }),
+        $.ajax({ url: readmeApi, dataType: 'json', headers: headers })
       ).done(function(langsResp, readmeResp) {
           const languages = (langsResp && langsResp[0]) || {};
           const readmeData = (readmeResp && readmeResp[0]) || {};
@@ -369,9 +354,8 @@
     e.preventDefault();
     const repo = $(this).data('repo');
     // config로부터 user 읽기
-    $.getJSON('data/config.json')
-      .done(function(cfg) {
-        const user = cfg.githubUser || cfg.user || '';
+    
+        const user = process.env.githubUser || process.env.user || '';
         if (!user) return;
         loadRepoReadme(user, repo);
       });
@@ -381,12 +365,11 @@
     // Show loading
     $('#project-detail').show().html('<p class="muted">프로젝트 정보를 불러오는 중...</p>');
 
-    // 먼저 설정에서 토큰 읽기
-    $.getJSON('data/config.json').done(function(cfg) {
-      const proxyBase = cfg && cfg.githubProxy ? String(cfg.githubProxy).trim() : '';
-      function resolveApiUrl(u) { return proxyBase ? (proxyBase + encodeURIComponent(u)) : u; }
+    // 먼저 설정에서 토큰 읽기 (프록시 미사용)
+    
       const headers = {};
-      if (!proxyBase && cfg && cfg.githubToken) headers['Authorization'] = 'Bearer ' + cfg.githubToken;
+      const token = process.env && (process.env.githubToken || process.env.gitHubToken || process.env.token);
+      if (token) headers['Authorization'] = 'Bearer ' + token;
       headers['X-GitHub-Api-Version'] = '2022-11-28';
       headers['Accept'] = 'application/vnd.github+json';
 
@@ -395,11 +378,11 @@
       const langsApi = `https://api.github.com/repos/${encodeURIComponent(user)}/${encodeURIComponent(repo)}/languages`;
       const readmeApi = `https://api.github.com/repos/${encodeURIComponent(user)}/${encodeURIComponent(repo)}/readme`;
 
-      $.ajax({ url: resolveApiUrl(repoApi), dataType: 'json', headers: headers }).done(function(repoInfo) {
+      $.ajax({ url: repoApi, dataType: 'json', headers: headers }).done(function(repoInfo) {
         // 병렬로 languages와 readme를 가져오기
         $.when(
-          $.ajax({ url: resolveApiUrl(langsApi), dataType: 'json', headers: headers }),
-          $.ajax({ url: resolveApiUrl(readmeApi), dataType: 'json', headers: headers })
+          $.ajax({ url: langsApi, dataType: 'json', headers: headers }),
+          $.ajax({ url: readmeApi, dataType: 'json', headers: headers })
         ).done(function(langsResp, readmeResp) {
           const languages = (langsResp && langsResp[0]) || {};
           const readmeData = (readmeResp && readmeResp[0]) || {};
@@ -480,9 +463,4 @@
         // hide detail pane if repo info cannot be loaded
         try { $('#project-detail').hide().empty(); } catch (e) {}
       });
-
-    }).fail(function() {
-      $('#project-detail').html('<p class="muted">설정 파일(data/config.json)을 불러오지 못했습니다.</p>');
-    });
   };
-})();
