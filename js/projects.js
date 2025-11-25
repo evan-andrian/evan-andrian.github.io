@@ -42,12 +42,23 @@ require('dotenv').config();
       e.stopPropagation();
     });
   } catch (e) { /* ignore if jQuery missing */ }
+  // load config helper: prefer runtime-injected `window.__CONFIG__`, fallback to `data/config.json`
+  function loadConfigDeferred() {
+    const d = $.Deferred();
+    try {
+      if (window.__CONFIG__) return d.resolve(window.__CONFIG__);
+      $.getJSON('data/config.json').done(function(cfg){ d.resolve(cfg || {}); }).fail(function(){ d.resolve({}); });
+    } catch (e) { d.resolve({}); }
+    return d.promise();
+  }
   window.loadProjects = function() {
+
     $('#projects-list').empty();
     $('#project-detail').hide().empty();
+    // load runtime config (window.__CONFIG__ or data/config.json)
+    loadConfigDeferred().done(function(cfg) {
     // 설정에서 githubUser 가져오기
-    
-        const user = process.env.githubUser;
+      const user = cfg && (cfg.githubUser || cfg.user) || '';
         if (!user) {
           $('#projects-list').html('<p class="muted">GitHub 사용자명이 설정되지 않았습니다. data/config.json을 편집하세요.</p>');
           return;
@@ -61,7 +72,7 @@ require('dotenv').config();
         // API base and headers (no proxy). support multiple token config keys.
         const api = `https://api.github.com/users/${encodeURIComponent(user)}/repos?sort=updated&per_page=100`;
         const headers = {};
-        const token = process.env && (process.env.githubToken || process.env.gitHubToken || process.env.token);
+        const token = cfg && (cfg.githubToken || cfg.gitHubToken || cfg.token);
         if (token) headers['Authorization'] = 'Bearer ' + token;
         headers['X-GitHub-Api-Version'] = '2022-11-28';
         headers['Accept'] = 'application/vnd.github+json';
@@ -92,9 +103,9 @@ require('dotenv').config();
                 // Allow explicit extra orgs from config (various keys: extraOrgs, includeOrgs, organizations, organization, orgs)
                 try {
                   let extra = [];
-                  if (process.env) {
+                  if (cfg) {
                     ['extraOrgs', 'includeOrgs', 'organizations', 'organization', 'orgs'].forEach(function(k) {
-                      const v = process.env[k];
+                      const v = cfg[k];
                       if (!v) return;
                       if (Array.isArray(v)) extra = extra.concat(v);
                       else extra.push(v);
@@ -184,10 +195,10 @@ require('dotenv').config();
             if (xhr && xhr.status === 403) msg = 'GitHub 요청이 거부되었습니다(레이트리밋 또는 권한).';
             $('#projects-list').html(`<p class="muted">${msg}</p>`);
           });
-      }
-      .fail(function() {
-        $('#projects-list').html('<p class="muted">설정 파일(data/config.json)을 불러오지 못했습니다.</p>');
-      });
+    }).fail(function() {
+      $('#projects-list').html('<p class="muted">설정 파일(data/config.json)을 불러오지 못했습니다.</p>');
+    });
+  };
 
   function renderRepoList(user, repos, headers, page, opts) {
     opts = opts || {};
@@ -354,7 +365,7 @@ require('dotenv').config();
     const repo = $(this).data('repo');
     // config로부터 user 읽기
     
-        const user = process.env.githubUser || process.env.user || '';
+        const user = config.env.githubUser || config.env.user || '';
         if (!user) return;
         loadRepoReadme(user, repo);
       });
@@ -367,7 +378,7 @@ require('dotenv').config();
     // 먼저 설정에서 토큰 읽기 (프록시 미사용)
     
       const headers = {};
-      const token = process.env && (process.env.githubToken || process.env.gitHubToken || process.env.token);
+      const token = config.env && (config.env.githubToken || config.env.gitHubToken || config.env.token);
       if (token) headers['Authorization'] = 'Bearer ' + token;
       headers['X-GitHub-Api-Version'] = '2022-11-28';
       headers['Accept'] = 'application/vnd.github+json';

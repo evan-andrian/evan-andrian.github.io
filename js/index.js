@@ -12,7 +12,7 @@ $(document).ready(function() {
     e.preventDefault();
     const repo = $(this).data('repo');
 
-        const user = process.env.githubUser || process.env.user || '';
+        const user = config.env.githubUser || config.env.user || '';
         if (!user) return;
         if (window.loadRepoReadme) window.loadRepoReadme(user, repo);
       });
