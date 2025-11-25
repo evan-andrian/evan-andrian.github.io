@@ -1,2 +1,9 @@
+
+# Ignore env files in data directory
 data/*.env
-*.env
+
+# Ignore node_modules
+node_modules
+
+# Ignore package-lock.json
+package-lock.json
