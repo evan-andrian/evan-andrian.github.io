@@ -1,2 +1,2 @@
-data/config.env
-config.env
+data/*.env
+*.env
